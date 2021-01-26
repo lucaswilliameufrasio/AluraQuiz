@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import db from '../db.json'
-import Widget from '../src/components/Widget'
-import QuizBackground from '../src/components/QuizBackground'
-import Footer from '../src/components/Footer'
-import GithubCorner from '../src/components/GithubCorner'
+import db from '../../db.json'
+import Widget from '../components/Widget'
+import QuizBackground from '../components/QuizBackground'
+import Footer from '../components/Footer'
+import GithubCorner from '../components/GithubCorner'
 
 export const QuizContainer = styled.div`
   width: 100%;
