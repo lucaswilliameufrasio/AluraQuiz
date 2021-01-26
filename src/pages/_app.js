@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import db from '../../db.json'
 
@@ -28,6 +29,18 @@ const theme = db.theme
 export default function App({ Component, pageProps }) {
   return (
     <>
+      <Head>
+        <title>AluraQuiz</title>
+        <meta property='og:title' content='AluraQuiz' key='title' />
+        <meta
+          property='og:url'
+          content='https://github.com/lucaswilliameufrasio/AluraQuiz'
+        />
+        <meta property='og:image' content={`${db.bg}`} />
+        <meta property='og:image:type' content='image/jpeg' />
+        <meta property='og:image:width' content='800' />
+        <meta property='og:image:height' content='600' />
+      </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Component {...pageProps} />
