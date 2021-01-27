@@ -1,3 +1,4 @@
+import React from 'react'
 import db from '../../db.json'
 import Widget from '../components/Widget'
 import Footer from '../components/Footer'
@@ -6,7 +7,7 @@ import GithubCorner from '../components/GithubCorner'
 import QuizContainer from '../components/QuizContainer'
 import QuizBackground from '../components/QuizBackground'
 
-export default function Home() {
+export default function Home () {
   return (
     <QuizBackground backgroundImage={db.bg}>
       <QuizContainer>
