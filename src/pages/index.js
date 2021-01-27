@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
+
 import db from '../../db.json'
-import Widget from '../components/Widget'
-import Footer from '../components/Footer'
-import QuizLogo from '../components/QuizLogo'
-import GithubCorner from '../components/GithubCorner'
-import QuizContainer from '../components/QuizContainer'
-import QuizBackground from '../components/QuizBackground'
+
+import {
+  Widget,
+  Footer,
+  Input,
+  Button,
+  QuizLogo,
+  GithubCorner,
+  QuizContainer,
+  QuizBackground
+} from '../components'
 
 export default function Home () {
   const [name, setName] = useState('')
@@ -28,15 +34,14 @@ export default function Home () {
           </Widget.Header>
           <Widget.Content>
             <form onSubmit={handleSubmit}>
-              <input
+              <Input
                 placeholder='Digita aqui seu nome'
-                type='text'
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
-              <button type='submit' disabled={name === ''}>
-                Jogar
-              </button>
+              <Button type='submit' disabled={name === ''}>
+                JOGAR
+              </Button>
             </form>
           </Widget.Content>
         </Widget>

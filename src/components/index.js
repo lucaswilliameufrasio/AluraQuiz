@@ -1,0 +1,8 @@
+export { default as Widget } from '../components/Widget'
+export { default as Footer } from '../components/Footer'
+export { default as Input } from '../components/Input'
+export { default as Button } from '../components/Button'
+export { default as QuizLogo } from '../components/QuizLogo'
+export { default as GithubCorner } from '../components/GithubCorner'
+export { default as QuizContainer } from '../components/QuizContainer'
+export { default as QuizBackground } from '../components/QuizBackground'
