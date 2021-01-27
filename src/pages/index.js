@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import db from '../../db.json'
 import Widget from '../components/Widget'
 import Footer from '../components/Footer'
@@ -8,6 +9,15 @@ import QuizContainer from '../components/QuizContainer'
 import QuizBackground from '../components/QuizBackground'
 
 export default function Home () {
+  const [name, setName] = useState('')
+  const router = useRouter()
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (name === '') return null
+    router.push(`/quiz?name=${name}`)
+  }
+
   return (
     <QuizBackground backgroundImage={db.bg}>
       <QuizContainer>
@@ -17,7 +27,17 @@ export default function Home () {
             <h1>Quiz CSS da Alura</h1>
           </Widget.Header>
           <Widget.Content>
-            <p>Hmm</p>
+            <form onSubmit={handleSubmit}>
+              <input
+                placeholder='Digita aqui seu nome'
+                type='text'
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+              <button type='submit' disabled={name === ''}>
+                Jogar
+              </button>
+            </form>
           </Widget.Content>
         </Widget>
         <Footer />
