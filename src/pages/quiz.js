@@ -146,6 +146,9 @@ export default function Quiz () {
   function handleSubmit (event) {
     event.preventDefault()
     setAnswerWasSubmitted(true)
+    if (answerWasSubmitted) {
+      return
+    }
     validateAnswer()
     setTimeout(() => {
       if (currentQuestion + 1 === totalOfQuestions) {
