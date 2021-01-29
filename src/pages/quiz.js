@@ -28,8 +28,11 @@ function QuestionWidget ({
   totalOfQuestions,
   selectedAnswerIndex,
   changeSelectedAnswer,
-  onSubmit
+  onSubmit,
+  answerWasSubmitted
 }) {
+  const isCorrect = Number(selectedAnswerIndex) === question.answer
+
   return (
     <Widget>
       <Widget.Header>
@@ -44,31 +47,35 @@ function QuestionWidget ({
         <h2>{question.title}</h2>
         <p>{question.description}</p>
 
-          {question.alternatives.map((alternative, alternativeIndex) => {
-            const alternativeKey = `alternative_${alternativeIndex}`
-            return (
-              <Widget.Topic
-                key={alternativeKey}
-                as='label'
-                htmlFor={alternativeKey}
-                selectedAnswer={
-                  selectedAnswerIndex &&
-                  alternativeIndex === Number(selectedAnswerIndex)
-                }
-              >
-                <input
-                  style={{ display: 'none' }}
-                  id={alternativeKey}
-                  name={questionIndex}
-                  type='radio'
-                  value={alternativeIndex}
-                  onClick={(event) => changeSelectedAnswer(event.target.value)}
-                />
-                {alternative}
-              </Widget.Topic>
-            )
-          })}
-          <Button onClick={onSubmit} disabled={!selectedAnswerIndex}>Confirmar</Button>
+        {question.alternatives.map((alternative, alternativeIndex) => {
+          const alternativeKey = `alternative_${alternativeIndex}`
+          return (
+            <Widget.Topic
+              key={alternativeKey}
+              as='label'
+              htmlFor={alternativeKey}
+              selectedAnswer={
+                selectedAnswerIndex &&
+                alternativeIndex === Number(selectedAnswerIndex)
+              }
+            >
+              <input
+                style={{ display: 'none' }}
+                id={alternativeKey}
+                name={questionIndex}
+                type='radio'
+                value={alternativeIndex}
+                onClick={(event) => changeSelectedAnswer(event.target.value)}
+              />
+              {alternative}
+            </Widget.Topic>
+          )
+        })}
+        <Button onClick={onSubmit} disabled={!selectedAnswerIndex}>
+          Confirmar
+        </Button>
+        {answerWasSubmitted && isCorrect && <p>Acertou</p>}
+        {answerWasSubmitted && !isCorrect && <p>Errou</p>}
       </Widget.Content>
     </Widget>
   )
@@ -90,6 +97,7 @@ export default function Quiz () {
   const [completed, setCompleted] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [answerWasSubmitted, setAnswerWasSubmitted] = useState(false)
   const [score, setScore] = useState(0)
   const totalOfQuestions = db.questions.length
   const question = db.questions[currentQuestion]
@@ -111,11 +119,15 @@ export default function Quiz () {
 
   function handleSubmit (event) {
     event.preventDefault()
-    if (currentQuestion + 1 === totalOfQuestions) {
-      setCompleted(true)
-    }
+    setAnswerWasSubmitted(true)
     validateAnswer()
-    getNextQuestion()
+    setTimeout(() => {
+      if (currentQuestion + 1 === totalOfQuestions) {
+        setCompleted(true)
+      }
+      setAnswerWasSubmitted(false)
+      getNextQuestion()
+    }, 3 * 1000)
   }
 
   return (
@@ -138,6 +150,7 @@ export default function Quiz () {
             selectedAnswerIndex={selectedAnswer}
             changeSelectedAnswer={setSelectedAnswer}
             onSubmit={handleSubmit}
+            answerWasSubmitted={answerWasSubmitted}
           />
               )}
 
