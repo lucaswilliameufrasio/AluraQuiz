@@ -79,6 +79,7 @@ function QuestionWidget ({
                   type='radio'
                   value={alternativeIndex}
                   onClick={(event) => changeSelectedAlternative(event.target.value)}
+                  disabled={answerWasSubmitted}
                 />
                 {alternative}
               </Widget.Topic>
