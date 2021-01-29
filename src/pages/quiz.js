@@ -68,7 +68,6 @@ function QuestionWidget ({
                 key={alternativeKey}
                 as='label'
                 htmlFor={alternativeKey}
-                selectedAnswer={isSelected}
                 data-selected={isSelected}
                 data-status={answerWasSubmitted && alternativeStatus}
               >
