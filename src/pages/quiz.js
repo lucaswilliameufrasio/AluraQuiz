@@ -111,6 +111,10 @@ export default function Quiz () {
   const question = db.questions[currentQuestion]
 
   useEffect(() => {
+    if (userName === undefined || userName === null || !userName.length) {
+      router.replace('/')
+      return
+    }
     setTimeout(() => setLoading(false), 700)
   }, [])
 
