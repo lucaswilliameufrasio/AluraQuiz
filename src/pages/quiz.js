@@ -118,7 +118,7 @@ export default function Quiz () {
   const [loading, setLoading] = useState(true)
   const [completed, setCompleted] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [selectedAlternative, setSelectedAlternative] = useState(null)
+  const [selectedAlternative, setSelectedAlternative] = useState(undefined)
   const [answerWasSubmitted, setAnswerWasSubmitted] = useState(false)
   const [score, setScore] = useState(0)
   const totalOfQuestions = db.questions.length
@@ -140,7 +140,7 @@ export default function Quiz () {
 
   function getNextQuestion () {
     setCurrentQuestion((currentQuestionIndex) => currentQuestionIndex + 1)
-    setSelectedAlternative(null)
+    setSelectedAlternative(undefined)
   }
 
   function handleSubmit (event) {
