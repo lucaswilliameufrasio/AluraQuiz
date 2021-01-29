@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
-
 import db from '../../db.json'
 
 import {
@@ -9,6 +8,7 @@ import {
   Input,
   Button,
   QuizLogo,
+  Link,
   GithubCorner,
   QuizContainer,
   QuizBackground
@@ -43,6 +43,32 @@ export default function Home () {
                 JOGAR
               </Button>
             </form>
+          </Widget.Content>
+        </Widget>
+        <Widget>
+          <Widget.Content>
+            <h1>Quiz da Galera</h1>
+
+            <ul>
+              {db.external.map((link, index) => {
+                const [projectName, githubUser] = link
+                  .replace(/\//g, '')
+                  .replace('https:', '')
+                  .replace('.vercel.app', '')
+                  .split('.')
+
+                return (
+                  <li key={index}>
+                    <Widget.Topic
+                      as={Link}
+                      href={`/quiz/${projectName}___${githubUser}?name=temporarilyHardCodedName`}
+                    >
+                      {`${githubUser}/${projectName}`}
+                    </Widget.Topic>
+                  </li>
+                )
+              })}
+            </ul>
           </Widget.Content>
         </Widget>
         <Footer />
