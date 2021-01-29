@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
+import { useRouter } from 'next/router'
 import db from '../../db.json'
 
 import {
@@ -81,18 +81,26 @@ function QuestionWidget ({
   )
 }
 
-function ResultWidget ({ finalScore }) {
+function ResultWidget ({ finalScore, name }) {
   return (
     <Widget>
       <Widget.Header>
         <h3>Resultado</h3>
       </Widget.Header>
-      <Widget.Content>Acertou {finalScore} questões</Widget.Content>
+      <Widget.Content>
+        {finalScore === 0 &&
+          'Acertou nenhuma, garanto que na próxima você consegue!'}
+        {finalScore > 0 &&
+          `Acertou ${finalScore} ${finalScore > 1 ? 'perguntas' : 'pergunta'}.
+        Parabéns, ${name}!`}
+      </Widget.Content>
     </Widget>
   )
 }
 
 export default function Quiz () {
+  const router = useRouter()
+  const userName = router.query.name
   const [loading, setLoading] = useState(true)
   const [completed, setCompleted] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -140,7 +148,7 @@ export default function Quiz () {
             )
           : completed
             ? (
-          <ResultWidget finalScore={score} />
+          <ResultWidget finalScore={score} name={userName} />
               )
             : (
           <QuestionWidget
