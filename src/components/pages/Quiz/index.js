@@ -6,6 +6,7 @@ import {
   Widget,
   Footer,
   Button,
+  Link,
   QuizLogo,
   GithubCorner,
   QuizContainer,
@@ -161,7 +162,9 @@ export default function Quiz ({ database }) {
   return (
     <QuizBackground backgroundImage={database.bg}>
       <QuizContainer>
+        <Link href='/'>
         <QuizLogo />
+        </Link>
         {loading
           ? (
           <LoadingWidget />
