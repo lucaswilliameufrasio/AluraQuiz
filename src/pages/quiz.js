@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useRouter } from 'next/router'
+
 import db from '../../db.json'
 
 import {
@@ -9,7 +11,8 @@ import {
   QuizLogo,
   GithubCorner,
   QuizContainer,
-  QuizBackground
+  QuizBackground,
+  InfiniteRotation
 } from '../components'
 
 function LoadingWidget () {
@@ -17,7 +20,11 @@ function LoadingWidget () {
     <Widget>
       <Widget.Header>Carregando...</Widget.Header>
 
-      <Widget.Content>[Desafio do Loading]</Widget.Content>
+      <Widget.Content>
+        <InfiniteRotation>
+          <AiOutlineLoading3Quarters color='#FFF' />
+        </InfiniteRotation>
+      </Widget.Content>
     </Widget>
   )
 }
