@@ -12,7 +12,8 @@ import {
   GithubCorner,
   QuizContainer,
   QuizBackground,
-  InfiniteRotation
+  InfiniteRotation,
+  AlternativesForm
 } from '../components'
 
 function LoadingWidget () {
@@ -34,11 +35,12 @@ function QuestionWidget ({
   questionIndex,
   totalOfQuestions,
   selectedAnswerIndex,
-  changeSelectedAnswer,
+  changeSelectedAlternative,
   onSubmit,
   answerWasSubmitted
 }) {
   const isCorrect = Number(selectedAnswerIndex) === question.answer
+  const hasAlternativeSelected = selectedAnswerIndex !== undefined
 
   return (
     <Widget>
@@ -54,33 +56,38 @@ function QuestionWidget ({
         <h2>{question.title}</h2>
         <p>{question.description}</p>
 
-        {question.alternatives.map((alternative, alternativeIndex) => {
-          const alternativeKey = `alternative_${alternativeIndex}`
-          return (
-            <Widget.Topic
-              key={alternativeKey}
-              as='label'
-              htmlFor={alternativeKey}
-              selectedAnswer={
-                selectedAnswerIndex &&
-                alternativeIndex === Number(selectedAnswerIndex)
-              }
-            >
-              <input
-                style={{ display: 'none' }}
-                id={alternativeKey}
-                name={questionIndex}
-                type='radio'
-                value={alternativeIndex}
-                onClick={(event) => changeSelectedAnswer(event.target.value)}
-              />
-              {alternative}
-            </Widget.Topic>
-          )
-        })}
-        <Button onClick={onSubmit} disabled={!selectedAnswerIndex}>
-          Confirmar
-        </Button>
+        <AlternativesForm onSubmit={onSubmit}>
+          {question.alternatives.map((alternative, alternativeIndex) => {
+            const alternativeKey = `alternative_${alternativeIndex}`
+            const isSelected =
+              selectedAnswerIndex &&
+              alternativeIndex === Number(selectedAnswerIndex)
+            const alternativeStatus = isCorrect ? 'SUCCESS' : 'ERROR'
+            return (
+              <Widget.Topic
+                key={alternativeKey}
+                as='label'
+                htmlFor={alternativeKey}
+                selectedAnswer={isSelected}
+                data-selected={isSelected}
+                data-status={answerWasSubmitted && alternativeStatus}
+              >
+                <input
+                  style={{ display: 'none' }}
+                  id={alternativeKey}
+                  name={questionIndex}
+                  type='radio'
+                  value={alternativeIndex}
+                  onClick={(event) => changeSelectedAlternative(event.target.value)}
+                />
+                {alternative}
+              </Widget.Topic>
+            )
+          })}
+          <Button type='submit' disabled={!hasAlternativeSelected}>
+            Confirmar
+          </Button>
+        </AlternativesForm>
         {answerWasSubmitted && isCorrect && <p>Acertou</p>}
         {answerWasSubmitted && !isCorrect && <p>Errou</p>}
       </Widget.Content>
@@ -111,7 +118,7 @@ export default function Quiz () {
   const [loading, setLoading] = useState(true)
   const [completed, setCompleted] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [selectedAlternative, setSelectedAlternative] = useState(null)
   const [answerWasSubmitted, setAnswerWasSubmitted] = useState(false)
   const [score, setScore] = useState(0)
   const totalOfQuestions = db.questions.length
@@ -126,14 +133,14 @@ export default function Quiz () {
   }, [])
 
   function validateAnswer () {
-    if (Number(selectedAnswer) === question.answer) {
+    if (Number(selectedAlternative) === question.answer) {
       setScore((oldScore) => oldScore + 1)
     }
   }
 
   function getNextQuestion () {
     setCurrentQuestion((currentQuestionIndex) => currentQuestionIndex + 1)
-    setSelectedAnswer(null)
+    setSelectedAlternative(null)
   }
 
   function handleSubmit (event) {
@@ -166,8 +173,8 @@ export default function Quiz () {
             question={question}
             questionIndex={currentQuestion}
             totalOfQuestions={totalOfQuestions}
-            selectedAnswerIndex={selectedAnswer}
-            changeSelectedAnswer={setSelectedAnswer}
+            selectedAnswerIndex={selectedAlternative}
+            changeSelectedAlternative={setSelectedAlternative}
             onSubmit={handleSubmit}
             answerWasSubmitted={answerWasSubmitted}
           />
